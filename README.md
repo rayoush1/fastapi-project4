@@ -16,7 +16,7 @@ requirements.txt
 
 1. Klonowanie repozytorium:
 
-git clone https://github.com/rayoush1/fastapi-project.git
+git clone https://github.com/rayoush1/fastapi-project4.git
 
 2. Instalacja zależności:
 
