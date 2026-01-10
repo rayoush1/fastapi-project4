@@ -56,6 +56,8 @@ def get_movies():
         db = sqlite3.connect('movies.db')
         cursor = db.cursor()
         movies = cursor.execute('SELECT * FROM movies').fetchall()
+        db.close()
+
         output = []
         for movie in movies:
             movie = {'id': movie[0], 'title': movie[1], 'year': movie[2], 'actors': movie[3]}
@@ -71,6 +73,8 @@ def get_single_movie(movie_id:int):
         db = sqlite3.connect('movies.db')
         cursor = db.cursor()
         movie = cursor.execute(f"SELECT * FROM movies WHERE id={movie_id}").fetchone()
+        db.close()
+
         if movie is None:
             return {"message": "Nie znaleziono filmu"}
         return {"id": movie[0], "title": movie[1], "year": movie[2], "actors": movie[3]}
@@ -102,9 +106,12 @@ async def rem_movies_all():
         db.commit()
 
         if cursor.rowcount > 0:
+            db.close()
             return {"message": f"Wszystkie filmy zostały usunięte!"}
         else:
+            db.close()
             return {"message": f"Nic nie zostało zmodyfikowane/pusta tabela"}
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Błąd: {str(e)}")
 
@@ -118,8 +125,10 @@ def update_movie_id(id: int, params: dict[str, Any]):
         cursor.execute('UPDATE movies SET title = ?, year = ?, actors =? WHERE id = ?;', (params["title"], params["year"], params["actors"], id))
         db.commit()
         if cursor.rowcount > 0:
+            db.close()
             return {"message": f"Dane filmu zostały zaktualizowane"}
         else:
+            db.close()
             return {"message": f"Nic nie zostało zmodyfikowane"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Błąd: {str(e)}")
@@ -133,8 +142,10 @@ def rem_movie_id(id: int):
         cursor.execute('DELETE FROM movies WHERE id = ?;', (id,))
         db.commit()
         if cursor.rowcount > 0:
+            db.close()
             return {"message": f"Film został usunięty"}
         else:
+            db.close()
             return {"message": f"Nic nie zostało zmodyfikowane"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Błąd: {str(e)}")
