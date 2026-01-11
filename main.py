@@ -32,6 +32,17 @@ async def say_hello(name: str):
 def sum(x: int = 0, y: int = 10):
     return x+y
 
+# Oblicza różnicę x i y; domyślnie x = 4, y = 3
+@app.get("/subtract")
+def difference(x: int = 4, y: int = 3):
+    return x-y
+
+# Oblicza iloczyn x i y; domyślnie x = 4, y = 3
+@app.get("/multiply")
+def multiplication(x: int = 4, y: int = 3):
+    return x*y
+
+
 # Podaje nazwę miejsca o współrzędnych geograficznych lat (szerokość geograficzna) i lon (długość geograficzna)
 @app.get("/geocode")
 def geoc(lat: float, lon: float):
